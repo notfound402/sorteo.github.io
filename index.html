@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ayudemos a Javier</title>
+  <style>
+    body{font-family:system-ui,Arial;max-width:900px;margin:40px auto;padding:0 16px}
+    .grid{display:grid;grid-template-columns:repeat(10,1fr);gap:8px}
+    .n{padding:10px 0;text-align:center;border-radius:10px;color:#fff;font-weight:700}
+    .ok{background:#16a34a} .no{background:#dc2626}
+  </style>
+</head>
+<body>
+  <h1>Ayudemos a Javier</h1>
+  <p>Demo inicial (luego lo conectamos a Google Sheets).</p>
+  <div class="grid">
+    <!-- ejemplo: 1..100 -->
+    <script>
+      for (let i=1;i<=100;i++){
+        const taken = [2,5,8,13].includes(i); // ejemplo
+        document.write(`<div class="n ${taken?'no':'ok'}">${i}</div>`);
+      }
+    </script>
+  </div>
+</body>
+</html>
