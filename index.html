@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sorteo a beneficio</title>
+
+  <style>
+    :root{
+      --bg1: #0b0f18;
+      --bg2: #0a1328;
+      --card: rgba(255,255,255,.08);
+      --card2: rgba(255,255,255,.06);
+      --border: rgba(255,255,255,.14);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.68);
+
+      --green: #34C759;      /* iOS green */
+      --red:   #FF3B30;      /* iOS red */
+      --blue:  #0A84FF;      /* iOS blue */
+      --shadow: 0 18px 60px rgba(0,0,0,.45);
+      --radius: 22px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      color:var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+                   "SF Pro Display","SF Pro Text","Segoe UI", Roboto, Arial, "Helvetica Neue", sans-serif;
+      background: radial-gradient(1200px 800px at 15% 10%, rgba(10,132,255,.28), transparent 55%),
+                  radial-gradient(900px 700px at 85% 20%, rgba(52,199,89,.18), transparent 50%),
+                  radial-gradient(1000px 800px at 60% 90%, rgba(191,90,242,.20), transparent 55%),
+                  linear-gradient(180deg, var(--bg2), var(--bg1));
+      overflow-x:hidden;
+    }
+
+    /* “Apple-ish” background noise + soft blobs */
+    .noise{
+      position:fixed; inset:0;
+      pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E");
+      mix-blend-mode:overlay;
+      opacity:.25;
+    }
+
+    .wrap{
+      max-width:1100px;
+      margin:0 auto;
+      padding:28px 18px 80px;
+      position:relative;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-top:10px;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 14px;
+      border-radius:999px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 10px 30px rgba(0,0,0,.22);
+      color: var(--muted);
+      font-size:13px;
+      letter-spacing:.2px;
+    }
+
+    .dot{
+      width:10px; height:10px; border-radius:50%;
+      background: var(--green);
+      box-shadow: 0 0 0 6px rgba(52,199,89,.18);
+    }
+
+    .hero{
+      margin-top:22px;
+      padding:28px 26px;
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+      border: 1px solid var(--border);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .hero:before{
+      content:"";
+      position:absolute;
+      inset:-40px -20px auto -20px;
+      height:220px;
+      background: radial-gradient(closest-side at 20% 40%, rgba(10,132,255,.45), transparent 70%),
+                  radial-gradient(closest-side at 70% 10%, rgba(191,90,242,.35), transparent 70%);
+      filter: blur(18px);
+      opacity:.9;
+    }
+
+    .heroInner{
+      position:relative;
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:22px;
+      align-items:start;
+    }
+
+    h1{
+      margin:0 0 10px;
+      font-size: clamp(34px, 5vw, 54px);
+      line-height:1.05;
+      letter-spacing:-.02em;
+      font-weight:800;
+    }
+
+    .sub{
+      margin:0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height:1.6;
+      max-width:52ch;
+    }
+
+    .ctaRow{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:18px;
+    }
+
+    /* Apple-like buttons */
+    .btn{
+      appearance:none;
+      border:none;
+      cursor:pointer;
+      padding:12px 16px;
+      border-radius: 14px;
+      font-weight:700;
+      letter-spacing:.2px;
+      font-size:14px;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+      user-select:none;
+      text-decoration:none;
+      color: var(--text);
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.14);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    .btn:hover{ transform: translateY(-1px); box-shadow: 0 14px 40px rgba(0,0,0,.35); }
+    .btn:active{ transform: translateY(0px) scale(.99); filter: brightness(.98); }
+
+    .btnPrimary{
+      background: linear-gradient(180deg, rgba(10,132,255,.95), rgba(10,132,255,.62));
+      border: 1px solid rgba(255,255,255,.18);
+    }
+
+    .btnDanger{
+      background: linear-gradient(180deg, rgba(255,59,48,.92), rgba(255,59,48,.55));
+      border: 1px solid rgba(255,255,255,.16);
+    }
+
+    .btnIcon{
+      width:18px;height:18px;display:inline-block;
+      filter: drop-shadow(0 6px 12px rgba(0,0,0,.25));
+    }
+
+    .panel{
+      border-radius: 18px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      padding:16px 16px;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .kpis{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+
+    .kpi{
+      border-radius: 16px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.10);
+      padding:14px 14px;
+    }
+
+    .kpi .label{ color: var(--muted); font-size:12px; }
+    .kpi .value{ font-size:18px; font-weight:800; margin-top:6px; letter-spacing:-.01em; }
+
+    .toolbar{
+      margin-top:18px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+    }
+
+    .search{
+      flex:1 1 320px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    .search input{
+      width:100%;
+      background:transparent;
+      border:none;
+      outline:none;
+      color: var(--text);
+      font-size:14px;
+    }
+    .pill{
+      padding:9px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: var(--muted);
+      font-size:13px;
+      cursor:pointer;
+      user-select:none;
+      transition: transform .15s ease, box-shadow .15s ease;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    .pill:hover{ transform: translateY(-1px); box-shadow: 0 12px 30px rgba(0,0,0,.28); }
+    .pill.active{
+      color: var(--text);
+      border-color: rgba(255,255,255,.20);
+      background: rgba(10,132,255,.18);
+    }
+
+    .gridCard{
+      margin-top:16px;
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      padding:18px;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow: var(--shadow);
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap:10px;
+    }
+
+    .cell{
+      border-radius: 14px;
+      padding:12px 0;
+      text-align:center;
+      font-weight:800;
+      letter-spacing:.2px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      cursor:pointer;
+      transition: transform .12s ease, filter .12s ease, border-color .12s ease;
+      user-select:none;
+    }
+    .cell:hover{ transform: translateY(-1px); filter: brightness(1.05); border-color: rgba(255,255,255,.22); }
+    .cell:active{ transform: translateY(0px) scale(.99); filter: brightness(.98); }
+
+    .cell.available{
+      background: linear-gradient(180deg, rgba(52,199,89,.28), rgba(52,199,89,.12));
+      border-color: rgba(52,199,89,.30);
+    }
+    .cell.taken{
+      background: linear-gradient(180deg, rgba(255,59,48,.26), rgba(255,59,48,.12));
+      border-color: rgba(255,59,48,.30);
+      color: rgba(255,255,255,.86);
+      text-decoration: line-through;
+      opacity:.85;
+    }
+
+    .footer{
+      margin-top:18px;
+      color: rgba(255,255,255,.55);
+      font-size:12px;
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    /* Responsive */
+    @media (max-width: 860px){
+      .heroInner{ grid-template-columns:1fr; }
+      .kpis{ grid-template-columns:1fr 1fr; }
+    }
+    @media (max-width: 520px){
+      .grid{ grid-template-columns: repeat(5, 1fr); }
+      .kpis{ grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="noise"></div>
+
+  <div class="wrap">
+    <div class="topbar">
+      <div class="badge"><span class="dot"></span> Sitio oficial del sorteo • Actualización en tiempo real (demo)</div>
+      <div class="badge">Powered by GitHub Pages</div>
+    </div>
+
+    <section class="hero">
+      <div class="heroInner">
+        <div>
+          <h1>Sorteo a beneficio</h1>
+          <p class="sub">
+            Elegí tu número del <b>1 al 100</b>. Los números en <b>verde</b> están disponibles.
+            Los números en <b>rojo</b> ya fueron tomados.
+          </p>
+
+          <div class="ctaRow">
+            <a class="btn btnPrimary" href="#numeros" id="btnElegir">
+              <svg class="btnIcon" viewBox="0 0 24 24" fill="none">
+                <path d="M12 5v14m-7-7h14" stroke="white" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              Elegir número
+            </a>
+
+            <button class="btn" id="btnCopiarAlias" type="button">
+              <svg class="btnIcon" viewBox="0 0 24 24" fill="none">
+                <path d="M8 7h10a2 2 0 0 1 2 2v10M6 17H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v1" stroke="white" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              Copiar alias
+            </button>
+
+            <button class="btn btnDanger" id="btnVerTomados" type="button">
+              <svg class="btnIcon" viewBox="0 0 24 24" fill="none">
+                <path d="M6 6l12 12M18 6L6 18" stroke="white" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              Ver tomados
+            </button>
+          </div>
+
+          <div class="toolbar">
+            <div class="search" title="Buscar número">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="white" stroke-opacity=".8" stroke-width="2"/>
+                <path d="M16.5 16.5 21 21" stroke="white" stroke-opacity=".8" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              <input id="searchInput" inputmode="numeric" placeholder="Buscar número (ej: 27)..." />
+            </div>
+
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <div class="pill active" data-filter="all">Todos</div>
+              <div class="pill" data-filter="available">Disponibles</div>
+              <div class="pill" data-filter="taken">Tomados</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="kpis">
+            <div class="kpi">
+              <div class="label">Meta</div>
+              <div class="value" id="kpiMeta">$2.500.000</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Recaudado</div>
+              <div class="value" id="kpiRecaudado">$800.000</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Disponibles</div>
+              <div class="value" id="kpiDisponibles">—</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Tomados</div>
+              <div class="value" id="kpiTomados">—</div>
+            </div>
+          </div>
+
+          <div style="margin-top:14px;color:var(--muted);font-size:13px;line-height:1.5">
+            <b>Alias:</b> <span id="aliasText">TIROFEDERAL.AYUDA</span><br/>
+            <b>Valor:</b> $25.000<br/>
+            <b>Sorteo:</b> Viernes 13 • Quiniela Nacional
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="gridCard" id="numeros">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px">
+        <div>
+          <div style="font-size:14px;color:var(--muted)">Grilla</div>
+          <div style="font-size:20px;font-weight:900;letter-spacing:-.01em">Números 1–100</div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <span class="badge"><span class="dot" style="background:var(--green); box-shadow:0 0 0 6px rgba(52,199,89,.14)"></span> Disponible</span>
+          <span class="badge"><span class="dot" style="background:var(--red); box-shadow:0 0 0 6px rgba(255,59,48,.14)"></span> Tomado</span>
+        </div>
+      </div>
+
+      <div class="grid" id="grid"></div>
+
+      <div class="footer">
+        <span id="status">Tip: tocá un número disponible para copiarlo.</span>
+        <span>Diseño minimal • estilo Apple</span>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // =========================
+    // CONFIGURACIÓN RÁPIDA
+    // =========================
+    const TOTAL_NUMBERS = 100;
+
+    // Marcá acá los números tomados (ejemplo)
+    const TAKEN_NUMBERS = new Set([2, 5, 8, 13, 21, 34, 55]);
+
+    // Alias de transferencia
+    const ALIAS = "TIROFEDERAL.AYUDA";
+
+    // KPIs
+    const META = 2500000;
+    const RECAUDADO = 800000;
+
+    // =========================
+    // HELPERS
+    // =========================
+    const $ = (q) => document.querySelector(q);
+    const $$ = (q) => Array.from(document.querySelectorAll(q));
+    const money = (n) => n.toLocaleString("es-AR", { style: "currency", currency: "ARS", maximumFractionDigits: 0 });
+
+    function copyText(text) {
+      return navigator.clipboard?.writeText(text)
+        .then(() => true)
+        .catch(() => false);
+    }
+
+    // =========================
+    // RENDER
+    // =========================
+    const grid = $("#grid");
+    const aliasText = $("#aliasText");
+    aliasText.textContent = ALIAS;
+
+    $("#kpiMeta").textContent = money(META);
+    $("#kpiRecaudado").textContent = money(RECAUDADO);
+
+    function render(filter = "all", search = "") {
+      grid.innerHTML = "";
+
+      let availableCount = 0;
+      let takenCount = 0;
+
+      for (let i = 1; i <= TOTAL_NUMBERS; i++) {
+        const taken = TAKEN_NUMBERS.has(i);
+        if (taken) takenCount++; else availableCount++;
+
+        const matchesSearch = !search || String(i).includes(search);
+        if (!matchesSearch) continue;
+
+        if (filter === "available" && taken) continue;
+        if (filter === "taken" && !taken) continue;
+
+        const div = document.createElement("div");
+        div.className = "cell " + (taken ? "taken" : "available");
+        div.textContent = i;
+        div.dataset.number = String(i);
+        div.dataset.state = taken ? "taken" : "available";
+
+        div.addEventListener("click", async () => {
+          if (taken) {
+            $("#status").textContent = `El número ${i} ya está tomado.`;
+            return;
+          }
+          const ok = await copyText(String(i));
+          $("#status").textContent = ok
+            ? `Número ${i} copiado ✅ (pegalo en el mensaje de WhatsApp/transferencia)`
+            : `Número ${i} seleccionado. (No pude copiar automático)`;
+        });
+
+        grid.appendChild(div);
+      }
+
+      $("#kpiDisponibles").textContent = availableCount;
+      $("#kpiTomados").textContent = takenCount;
+    }
+
+    // =========================
+    // FILTROS / UI
+    // =========================
+    let currentFilter = "all";
+
+    $$(".pill").forEach(p => {
+      p.addEventListener("click", () => {
+        $$(".pill").forEach(x => x.classList.remove("active"));
+        p.classList.add("active");
+        currentFilter = p.dataset.filter;
+        render(currentFilter, $("#searchInput").value.trim());
+      });
+    });
+
+    $("#searchInput").addEventListener("input", (e) => {
+      const v = (e.target.value || "").replace(/[^\d]/g, "").slice(0, 3);
+      e.target.value = v;
+      render(currentFilter, v);
+    });
+
+    $("#btnCopiarAlias").addEventListener("click", async () => {
+      const ok = await copyText(ALIAS);
+      $("#status").textContent = ok ? "Alias copiado ✅" : "No pude copiar el alias automáticamente.";
+    });
+
+    $("#btnVerTomados").addEventListener("click", () => {
+      $$(".pill").forEach(x => x.classList.remove("active"));
+      const p = $$(".pill").find(x => x.dataset.filter === "taken");
+      p.classList.add("active");
+      currentFilter = "taken";
+      render(currentFilter, $("#searchInput").value.trim());
+      location.hash = "#numeros";
+    });
+
+    // Inicial
+    render("all", "");
+  </script>
+</body>
+</html>
