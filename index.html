@@ -12,8 +12,6 @@
       --border: rgba(255,255,255,.14);
       --text: rgba(255,255,255,.92);
       --muted: rgba(255,255,255,.68);
-
-      --green: #34C759;
       --blue:  #0A84FF;
       --shadow: 0 18px 60px rgba(0,0,0,.45);
       --radius: 22px;
@@ -21,11 +19,12 @@
 
     *{box-sizing:border-box}
     html,body{height:100%}
+
     body{
       margin:0;
       color:var(--text);
       font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-                   "SF Pro Display","SF Pro Text","Segoe UI", Roboto, Arial, "Helvetica Neue", sans-serif;
+                   "SF Pro Display","SF Pro Text","Segoe UI", Roboto, Arial, sans-serif;
       background: radial-gradient(1200px 800px at 15% 10%, rgba(10,132,255,.28), transparent 55%),
                   radial-gradient(900px 700px at 85% 20%, rgba(52,199,89,.18), transparent 50%),
                   radial-gradient(1000px 800px at 60% 90%, rgba(191,90,242,.20), transparent 55%),
@@ -44,7 +43,7 @@
     .wrap{
       max-width:1100px;
       margin:0 auto;
-      padding:28px 18px 80px;
+      padding:40px 18px 80px;
       position:relative;
     }
 
@@ -53,8 +52,8 @@
       align-items:center;
       justify-content:space-between;
       gap:12px;
-      margin-top:10px;
       flex-wrap:wrap;
+      margin-bottom:20px;
     }
 
     .badge{
@@ -66,160 +65,135 @@
       background: rgba(255,255,255,.06);
       border: 1px solid rgba(255,255,255,.12);
       backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      box-shadow: 0 10px 30px rgba(0,0,0,.22);
       color: var(--muted);
       font-size:13px;
-      letter-spacing:.2px;
     }
 
     .dot{
-      width:10px; height:10px; border-radius:50%;
-      background: var(--green);
-      box-shadow: 0 0 0 6px rgba(52,199,89,.18);
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background: var(--blue);
+      box-shadow: 0 0 0 6px rgba(10,132,255,.18);
     }
 
     .hero{
-      margin-top:22px;
-      padding:28px 26px;
+      padding:40px 36px;
       border-radius: var(--radius);
       background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
       border: 1px solid var(--border);
       backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
       box-shadow: var(--shadow);
-      position:relative;
-      overflow:hidden;
-    }
-
-    .hero:before{
-      content:"";
-      position:absolute;
-      inset:-40px -20px auto -20px;
-      height:220px;
-      background: radial-gradient(closest-side at 20% 40%, rgba(10,132,255,.45), transparent 70%),
-                  radial-gradient(closest-side at 70% 10%, rgba(191,90,242,.35), transparent 70%);
-      filter: blur(18px);
-      opacity:.9;
     }
 
     .heroInner{
-      position:relative;
       display:grid;
       grid-template-columns: 1.2fr .8fr;
-      gap:22px;
-      align-items:start;
+      gap:30px;
     }
 
     h1{
-      margin:0 0 10px;
-      font-size: clamp(40px, 6vw, 60px);
-      line-height:1.05;
-      letter-spacing:-.02em;
+      margin:0 0 16px;
+      font-size: clamp(44px, 6vw, 64px);
       font-weight:900;
+      letter-spacing:-.02em;
     }
 
     .sub{
-      margin:0;
+      font-size:18px;
       color: var(--muted);
-      font-size: 15px;
-      line-height:1.7;
-      max-width:56ch;
+      line-height:1.6;
     }
 
     .pillOk{
       display:inline-flex;
       align-items:center;
       gap:10px;
-      margin-top:18px;
-      padding:10px 12px;
+      margin-top:24px;
+      padding:12px 18px;
       border-radius:999px;
-      background: rgba(10,132,255,.14);
+      background: rgba(10,132,255,.18);
       border: 1px solid rgba(255,255,255,.16);
-      color: rgba(255,255,255,.92);
-      font-size:13px;
-      letter-spacing:.2px;
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
+      font-size:14px;
     }
-    .pillOk .spark{
+
+    .spark{
       width:10px;height:10px;border-radius:50%;
       background: var(--blue);
-      box-shadow: 0 0 0 6px rgba(10,132,255,.16);
+      box-shadow: 0 0 0 6px rgba(10,132,255,.18);
     }
 
     .panel{
       border-radius: 18px;
       background: rgba(255,255,255,.06);
       border: 1px solid rgba(255,255,255,.12);
-      padding:16px 16px;
+      padding:22px;
       backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
     }
 
     .thanksTitle{
       font-weight:900;
-      letter-spacing:-.01em;
+      font-size:18px;
       margin:0 0 10px;
-      font-size:16px;
     }
 
     .logoCard{
-      margin-top:12px;
+      margin-top:20px;
       border-radius: 18px;
       background: rgba(255,255,255,.06);
       border: 1px solid rgba(255,255,255,.12);
-      padding:14px;
+      padding:16px;
       display:flex;
-      gap:12px;
+      gap:16px;
       align-items:center;
+      backdrop-filter: blur(14px);
     }
 
     .logoWrap{
-      width:72px; height:72px;
-      border-radius:20px;
-      background: rgba(255,255,255,.05);
+      width:80px;
+      height:80px;
+      border-radius:22px;
+      overflow:hidden;
+      background: rgba(255,255,255,.04);
       border: 1px solid rgba(255,255,255,.12);
       display:flex;
       align-items:center;
       justify-content:center;
-      box-shadow: 0 14px 44px rgba(0,0,0,.35);
-      overflow:hidden;
-      flex: 0 0 auto;
+      box-shadow: 0 18px 50px rgba(0,0,0,.35);
     }
 
     .logoWrap img{
-      width:72px;height:72px;
+      width:100%;
+      height:100%;
       object-fit:cover;
-      transform: scale(1.02);
     }
 
     .logoText .name{
-      font-size:14px;
+      font-size:16px;
       font-weight:900;
-      letter-spacing:-.01em;
       margin:0;
     }
+
     .logoText .desc{
       margin:6px 0 0;
-      font-size:12.5px;
+      font-size:14px;
       color: var(--muted);
-      line-height:1.45;
     }
 
     .footerNote{
-      margin-top:14px;
+      margin-top:28px;
+      font-size:13px;
       color: rgba(255,255,255,.55);
-      font-size:12px;
       display:flex;
       justify-content:space-between;
       flex-wrap:wrap;
-      gap:8px;
-      align-items:center;
+      gap:10px;
     }
 
-    @media (max-width: 860px){
-      .heroInner{ grid-template-columns:1fr; }
+    @media (max-width: 900px){
+      .heroInner{
+        grid-template-columns:1fr;
+      }
     }
   </style>
 </head>
@@ -229,38 +203,64 @@
 
   <div class="wrap">
     <div class="topbar">
-      <div class="badge"><span class="dot"></span> Sitio oficial del sorteo</div>
-      <div class="badge">Designed by Martin Acosta</div>
+      <div class="badge">
+        <span class="dot"></span>
+        Sitio oficial del sorteo
+      </div>
+      <div class="badge">
+        Designed by Martin Acosta
+      </div>
     </div>
 
     <section class="hero">
       <div class="heroInner">
+
+        <!-- IZQUIERDA -->
         <div>
           <h1>Sorteo Cerrado</h1>
-          <p class="sub">
+
+          <div class="sub">
             Gracias por ayudar a Javier.<br/>
-            Buena suerte&nbsp;!
-          </p>
+            Buena suerte !
+          </div>
 
           <div class="pillOk">
             <span class="spark"></span>
-            <span>Las reservas ya no se encuentran disponibles.</span>
+            Las reservas ya no se encuentran disponibles.
           </div>
 
           <div class="footerNote">
             <span>💙 Comunidad, amigos y familia: gracias por estar.</span>
-            <span>Actualizado: <span id="ts">—</span></span>
+            <span>Actualizado: —</span>
           </div>
         </div>
 
+        <!-- DERECHA -->
         <div class="panel">
-          <p class="thanksTitle">Especial agradecimiento</p>
-          <div style="color:var(--muted);font-size:13px;line-height:1.55">
-            A quienes aportaron premios y ayudaron a que esto sea posible.
+          <p class="thanksTitle">Especial agradecimiento a San Marzano</p>
+
+          <div style="color:var(--muted);font-size:14px;line-height:1.6">
+            Gracias por aportar premios y acompañar esta iniciativa solidaria.
           </div>
 
           <div class="logoCard">
-            <div class="logoWrap" aria-label="Logo San Marzano">
-              <img alt="San Marzano"
-                src="data:image/webp;base64,UklGRlQpAABXRUJQVlA4IEgpAACQGQCdASpoAooDPm0skkckIyIhKa0BBeL8lPq+90+PZp1Q8e8Wm7U0eQxR4fJ8t7WbF6O6cY5u3m4y1p0cO8c0b1n2nJQhKk3v3x9g8o2b2qvQw3b0y8t3e0qf7JxqY5Wq7x7Vd8t7cQ2p0F2p0v7kQmO7w2ZxgkKq7nJ9o4c+X7f+2V9G0w+X4fR6c2uO+v9g0+H8lK+v4SxvH9c5pJ4t9vQ7gV3bqfFzQ5G+J4D2rVh8pYQY2cZb9w
+            <div class="logoWrap">
+              <img src="./sanmarzano.png" alt="San Marzano">
+            </div>
+
+            <div class="logoText">
+              <p class="name">San Marzano</p>
+              <p class="desc">
+                Sponsor oficial del sorteo.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+</body>
+</html>
 
