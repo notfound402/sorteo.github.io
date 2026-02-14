@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sorteo a beneficio de Javier Bonetti</title>
+  <title>Ganadores del sorteo</title>
 
   <style>
     :root{
@@ -25,10 +25,11 @@
       color:var(--text);
       font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
                    "SF Pro Display","SF Pro Text","Segoe UI", Roboto, Arial, sans-serif;
-      background: radial-gradient(1200px 800px at 15% 10%, rgba(10,132,255,.28), transparent 55%),
-                  radial-gradient(900px 700px at 85% 20%, rgba(52,199,89,.18), transparent 50%),
-                  radial-gradient(1000px 800px at 60% 90%, rgba(191,90,242,.20), transparent 55%),
-                  linear-gradient(180deg, var(--bg2), var(--bg1));
+      background:
+        radial-gradient(1200px 800px at 15% 10%, rgba(10,132,255,.28), transparent 55%),
+        radial-gradient(900px 700px at 85% 20%, rgba(52,199,89,.18), transparent 50%),
+        radial-gradient(1000px 800px at 60% 90%, rgba(191,90,242,.20), transparent 55%),
+        linear-gradient(180deg, var(--bg2), var(--bg1));
       overflow-x:hidden;
     }
 
@@ -41,10 +42,10 @@
     }
 
     .wrap{
-      max-width:1100px;
-      margin:0 auto;
-      padding:40px 18px 80px;
-      position:relative;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 18px 80px;
+      position: relative;
     }
 
     .topbar{
@@ -78,7 +79,7 @@
     }
 
     .hero{
-      padding:40px 36px;
+      padding: 40px 36px;
       border-radius: var(--radius);
       background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
       border: 1px solid var(--border);
@@ -86,35 +87,60 @@
       box-shadow: var(--shadow);
     }
 
-    .heroInner{
-      display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap:30px;
-    }
-
     h1{
-      margin:0 0 16px;
-      font-size: clamp(44px, 6vw, 64px);
-      font-weight:900;
-      letter-spacing:-.02em;
+      margin:0 0 14px;
+      font-size: clamp(38px, 5.2vw, 58px);
+      font-weight: 900;
+      letter-spacing: -.02em;
     }
 
     .sub{
-      font-size:18px;
+      font-size: 18px;
       color: var(--muted);
-      line-height:1.6;
+      line-height: 1.6;
+      margin-bottom: 26px;
     }
 
-    .pillOk{
+    .winners{
+      display: grid;
+      gap: 14px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .winnerItem{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 14px;
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      backdrop-filter: blur(14px);
+    }
+
+    .place{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width: 180px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .pill{
       display:inline-flex;
       align-items:center;
       gap:10px;
-      margin-top:24px;
-      padding:12px 18px;
-      border-radius:999px;
+      padding: 10px 14px;
+      border-radius: 999px;
       background: rgba(10,132,255,.18);
       border: 1px solid rgba(255,255,255,.16);
-      font-size:14px;
+      font-size: 13px;
+      color: var(--text);
+      white-space: nowrap;
     }
 
     .spark{
@@ -123,77 +149,32 @@
       box-shadow: 0 0 0 6px rgba(10,132,255,.18);
     }
 
-    .panel{
-      border-radius: 18px;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.12);
-      padding:22px;
-      backdrop-filter: blur(14px);
-    }
-
-    .thanksTitle{
-      font-weight:900;
-      font-size:18px;
-      margin:0 0 10px;
-    }
-
-    .logoCard{
-      margin-top:20px;
-      border-radius: 18px;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.12);
-      padding:16px;
-      display:flex;
-      gap:16px;
-      align-items:center;
-      backdrop-filter: blur(14px);
-    }
-
-    .logoWrap{
-      width:80px;
-      height:80px;
-      border-radius:22px;
-      overflow:hidden;
-      background: rgba(255,255,255,.04);
-      border: 1px solid rgba(255,255,255,.12);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      box-shadow: 0 18px 50px rgba(0,0,0,.35);
-    }
-
-    .logoWrap img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-    }
-
-    .logoText .name{
-      font-size:16px;
-      font-weight:900;
-      margin:0;
-    }
-
-    .logoText .desc{
-      margin:6px 0 0;
-      font-size:14px;
-      color: var(--muted);
+    .name{
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: -.01em;
+      margin: 0;
+      flex: 1;
     }
 
     .footerNote{
-      margin-top:28px;
-      font-size:13px;
-      color: rgba(255,255,255,.55);
+      margin-top: 24px;
+      font-size: 14px;
+      color: rgba(255,255,255,.70);
+      line-height: 1.6;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255,255,255,.10);
       display:flex;
       justify-content:space-between;
       flex-wrap:wrap;
       gap:10px;
     }
 
-    @media (max-width: 900px){
-      .heroInner{
-        grid-template-columns:1fr;
-      }
+    @media (max-width: 640px){
+      .hero{ padding: 28px 20px; }
+      .winnerItem{ flex-direction: column; align-items:flex-start; }
+      .place{ min-width: auto; }
+      .pill{ align-self:flex-start; }
     }
   </style>
 </head>
@@ -205,7 +186,7 @@
     <div class="topbar">
       <div class="badge">
         <span class="dot"></span>
-        Sitio oficial del sorteo
+        Resultados oficiales
       </div>
       <div class="badge">
         Designed by Martin Acosta
@@ -213,54 +194,36 @@
     </div>
 
     <section class="hero">
-      <div class="heroInner">
+      <h1>Ganadores del sorteo</h1>
+      <div class="sub">
+        Felicitaciones a los ganadores. ¡Gracias a todos por participar y ayudar!
+      </div>
 
-        <!-- IZQUIERDA -->
-        <div>
-          <h1>Sorteo Cerrado</h1>
+      <ul class="winners">
+        <li class="winnerItem">
+          <div class="place">🥇 1er premio</div>
+          <p class="name">Norberto Garcia</p>
+          <div class="pill"><span class="spark"></span>Ganador</div>
+        </li>
 
-          <div class="sub">
-            Gracias por ayudar a Javier.<br/>
-            Buena suerte !
-          </div>
+        <li class="winnerItem">
+          <div class="place">🥈 2do premio</div>
+          <p class="name">Gabriela Buchhamer</p>
+          <div class="pill"><span class="spark"></span>Ganadora</div>
+        </li>
 
-          <div class="pillOk">
-            <span class="spark"></span>
-            Las reservas ya no se encuentran disponibles.
-          </div>
+        <li class="winnerItem">
+          <div class="place">🥉 3er premio</div>
+          <p class="name">Pablo Soruco</p>
+          <div class="pill"><span class="spark"></span>Ganador</div>
+        </li>
+      </ul>
 
-          <div class="footerNote">
-            <span>💙 Comunidad, amigos y familia: gracias por estar.</span>
-            <span>Actualizado: —</span>
-          </div>
-        </div>
-
-        <!-- DERECHA -->
-        <div class="panel">
-          <p class="thanksTitle">Especial agradecimiento a San Marzano y a Flia Cerdan</p>
-
-          <div style="color:var(--muted);font-size:14px;line-height:1.6">
-            Gracias por aportar premios y acompañar esta iniciativa solidaria.
-          </div>
-
-          <div class="logoCard">
-            <div class="logoWrap">
-              <img src="./sanmarzano.jpg" alt="San Marzano">
-            </div>
-
-            <div class="logoText">
-              <p class="name">San Marzano</p>
-              <p class="desc">
-                Sponsor del sorteo.
-              </p>
-            </div>
-          </div>
-        </div>
-
+      <div class="footerNote">
+        <span>📩 Comunicate con nosotros para coordinar la entrega de premios.</span>
+        <span>💙 Felicitaciones a los ganadores!</span>
       </div>
     </section>
   </div>
-
 </body>
 </html>
-
